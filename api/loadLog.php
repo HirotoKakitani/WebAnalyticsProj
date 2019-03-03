@@ -1,9 +1,7 @@
 <?php
+    require('config.php')
     $servername = "localhost";
-    $username = "";
-    $password = "";
-    $dbname = "";
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $un, $pw, $db);
     if ($conn->connect_error){
         die("connection failed: ".$conn->connect_error);
     }

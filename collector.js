@@ -1,8 +1,5 @@
-//TODO generate report
-//TODO authentication
-
-//var url = "http://localhost:8000/api/log.php";
-var url = "http://167.99.172.17:8080/api/log.php";
+var url = "http://localhost:8000/api/log.php";
+//var url = "http://167.99.172.17:8080/api/log.php";
 
 //sessionization
 if (document.cookie.split(';').filter((item) => item.trim().startsWith('sessionId=')).length) {

@@ -1,11 +1,9 @@
 <?php
+    require('config.php');
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         //set up database connection
         $servername = "localhost";
-        $username = "testUser";
-        $password = "hihi1234";
-        $dbname = "testDB";
-        $conn = new mysqli($servername, $username, $password, $dbname);
+        $conn = new mysqli($servername, $un, $pw, $db);
         if ($conn->connect_error){
             die("connection failed: ".$conn->connect_error);
         }
