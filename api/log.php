@@ -2,9 +2,9 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         //set up database connection
         $servername = "localhost";
-        $username = "";
-        $password = "";
-        $dbname = "";
+        $username = "testUser";
+        $password = "hihi1234";
+        $dbname = "testDB";
         $conn = new mysqli($servername, $username, $password, $dbname);
         if ($conn->connect_error){
             die("connection failed: ".$conn->connect_error);
@@ -28,7 +28,6 @@
                 echo (mysqli_error($conn));
             }
         }
-        //error log received
         else {
              //check for packet completeness
             if (!$_POST['id'] || !$_POST['e'] || !$_POST['ti'] || !$_POST['t']){
