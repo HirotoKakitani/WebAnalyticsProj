@@ -1,8 +1,8 @@
-//TODO set up endpoint on server
-//TODO package and send to endpoint
-//TODO save to database.
 //TODO generate report
 //TODO authentication
+
+//var url = "http://localhost:8000/api/log.php";
+var url = "http://167.99.172.17:8080/api/log.php";
 
 //sessionization
 if (document.cookie.split(';').filter((item) => item.trim().startsWith('sessionId=')).length) {
@@ -39,12 +39,21 @@ window.addEventListener('load',function(){
     
     console.log("load session: " + sessionId);
 
-    //TODO beacon does not seem to fire when FromData being sent
-    var url = "http://localhost:8000/api/log.php";
     var data = new FormData();
-    data.append('test', 'Hello!');
+    //console.log("collectedDevice :" + typeof String(collectedDevice));
+    //console.log("collectedDevice :" + String(collectedDevice));
+    data.append('id', sessionId);
+    data.append('w', String(collectedWidth));
+    data.append('h', String(collectedHeight));
+    data.append('ct', String(connectTime));
+    data.append('rt', String(renderTime));
+    data.append('d', String(collectedDevice));
+    data.append('t','load');    
+
     //var data = "test=testing!";
-    //console.log(data);
+    //for (var i of data){
+    //    console.log(i);
+    //}
     var res = navigator.sendBeacon(url,data);
     console.log("res: " + res);
 });
@@ -54,8 +63,23 @@ window.addEventListener('error',function(event){
     var errorMessage = event.message;
     var errorTimeStamp = event.timeStamp;
     console.log("Error: " + errorMessage + " at time " + errorTimeStamp);    
-    
     console.log("error session: " + sessionId);
+    var data = new FormData();
+    //console.log("collectedDevice :" + typeof String(collectedDevice));
+    //console.log("collectedDevice :" + String(collectedDevice));
+    data.append('id', sessionId);
+    data.append('e', String(errorMessage));
+    data.append('ti', String(errorTimeStamp));
+    data.append('t','error');    
+
+    //var data = "test=testing!";
+    //for (var i of data){
+    //    console.log(i);
+    //}
+    var res = navigator.sendBeacon(url,data);
+    console.log("res: " + res);
+
+
 });
 
 //records click positions and element clicked
