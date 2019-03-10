@@ -19,13 +19,15 @@
                         <th>Height</th>
                         <th>Connection Time</th>
                         <th>Render Time</th>
-                        <th>Device Type</th>
+                        <th>OS</th>
+                        <th>Browser</th>
+                        <th>Browser Version</th>
                     </tr>
                     ";
     if ($qResults->num_rows > 0){
         while($row = $qResults->fetch_assoc()){
             //echo ("sessionId: " .$row['sessionId']. "\n   Device Type: " .$row['deviceType']."\n");
-            $tableString .= "<tr> ". "<td>".$row['sessionId'] ."</td><td>".$row['width']."</td><td>".$row['height']."</td><td>".$row['connectTime']."</td><td>".$row['renderTime']."</td><td>".$row['deviceType']."</td></tr>";
+            $tableString .= "<tr><td>{$row['sessionId']}</td><td>{$row['width']}</td><td>{$row['height']}</td><td>{$row['connectTime']}</td><td>{$row['renderTime']}</td><td>{$row['os']}</td><td>{$row['browser']}</td><td>{$row['version']}</td></tr>";
         }
     }
     $tableString .= "</table>"; 
