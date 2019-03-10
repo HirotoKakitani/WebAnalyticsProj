@@ -16,8 +16,9 @@
                 throw new Exception("Incomplete packet: {$_POST['id']}, {$_POST['w']}, {$_POST['h']}, {$_POST['d']}, {$_POST['ct']}, {$_POST['rt']} ");
             }
             echo ("this is a php page\n");
-            //$browser = get_browser($_POST['d'], true);
-            $insertStatement = "INSERT INTO loadTable VALUES ('{$_POST['id']}', '{$_POST['w']}', '{$_POST['h']}', '{$_POST['ct']}', '{$_POST['rt']}', '{$_POST['d']}');";
+            $browserInfo = get_browser($_POST['d'], true);
+            //$insertStatement = "INSERT INTO loadTable VALUES ('{$_POST['id']}', '{$_POST['w']}', '{$_POST['h']}', '{$_POST['ct']}', '{$_POST['rt']}', '{$_POST['d']}');";
+            $insertStatement = "INSERT INTO loadTable VALUES ('{$_POST['id']}', '{$_POST['w']}', '{$_POST['h']}', '{$_POST['ct']}', '{$_POST['rt']}', '{$browserInfo['platform']}', '{$browserInfo['browser']}', '{$browserInfo['version']}');";
             if ($conn->query($insertStatement)){
                 echo "inserted!\n";
             } 
@@ -26,6 +27,8 @@
                 echo (mysqli_error($conn));
             }
         }
+        
+        //errror log received
         else {
              //check for packet completeness
             if (!$_POST['id'] || !$_POST['e'] || !$_POST['ti'] || !$_POST['t']){

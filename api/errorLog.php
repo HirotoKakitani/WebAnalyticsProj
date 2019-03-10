@@ -1,5 +1,10 @@
 <?php
-    require('config.php')
+    session_start();
+    //redirect to login if not logged in
+    if (!$_SESSION['username']){
+        header("Location: login.html");
+    } 
+    require('config.php');
     $servername = "localhost";
     $conn = new mysqli($servername, $un, $pw, $db);
     if ($conn->connect_error){

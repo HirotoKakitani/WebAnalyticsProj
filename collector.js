@@ -22,7 +22,7 @@ window.addEventListener('load',function(){
     //console.log(window.navigator);
     var collectedWidth = window.screen.width;
     var collectedHeight = window.screen.height;
-    var collectedDevice = window.navigator.appVersion;
+    var collectedDevice = window.navigator.userAgent;
     console.log("Resolution: " + collectedWidth + " x " + collectedHeight);
     console.log("Browser and device: " + collectedDevice); 
     var timingData = window.performance.timing;

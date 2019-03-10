@@ -1,5 +1,8 @@
 <?php
+    //phpinfo();
     require('config.php');
+    require('random-uagent/uagent.php');
+    //$url = 'http://localhost:8000/api/log.php';
     $servername = "localhost";
     $conn = new mysqli($servername, $un, $pw, $db);
     if ($conn->connect_error){
@@ -11,7 +14,11 @@
     $width = rand(500,1800);
     $connectTime = "";
     $renderTime = "";
-    $deviceType = chooseRandDevice();
+    $ua = random_uagent();
+    $parsedUa = get_browser($ua,true);
+    $os = $parsedUa['platform'];
+    $browser = $parsedUa['browser'];
+    $version = $parsedUa['version'];
     $error = "";
     $time = "";
     for ($i = 0;$i < 1000; $i++){
@@ -19,23 +26,20 @@
             $sessionId = generateRandomString(11); 
             $height = rand(500,1800);
             $width = rand(500,1800);
-            $deviceType = chooseRandDevice();
+            $ua = random_uagent();
+            $parsedUa = get_browser($ua,true);
+            $os = $parsedUa['platform'];
+            $browser = $parsedUa['browser'];
+            $version = $parsedUa['version'];
+
         }   
         $connectTime = rand(0,1000);
         $renderTime = rand(0,1000);
         $error = "Error ".rand(100,400);
         $time = rand(1000,4000);
-        /*
-        echo $sessionId . " | ";
-        echo $height. " | ";
-        echo $width . " | ";
-        echo $connectTime . " | ";
-        echo $renderTime . " | ";
-        echo $deviceType . " | ";
-        echo $error . " | ";
-        echo $time . " | ";
-        echo "-----------";*/
-        $ltInsert = "INSERT INTO loadTable VALUES ('{$sessionId}', '{$width}', '{$height}', '{$connectTime}', '{$renderTime}', '{$deviceType}');";
+       
+        //insert directly into db 
+        $ltInsert = "INSERT INTO loadTable VALUES ('{$sessionId}', '{$width}', '{$height}', '{$connectTime}', '{$renderTime}', '{$os}', '{$browser}', '{$version}');";
         if ($conn->query($ltInsert)){
             echo "inserted!\n";
         } 
@@ -54,19 +58,6 @@
         }
 
     }   
-
-    function chooseRandDevice(){
-        $r = rand(0,2);
-        if ($r==0){
-            return "Chrome";
-        }
-        else if ($r == 1){
-            return "Internet Explorer";
-        }
-        else{
-            return "Firefox";
-        }
-    }
     function generateRandomString($length = 11) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
