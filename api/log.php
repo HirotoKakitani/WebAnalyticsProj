@@ -11,15 +11,16 @@
         //load log received
         if ($_POST['t'] == 'load'){
             //check for packet completeness
-            if (!$_POST['id'] || !$_POST['w'] || !$_POST['h'] || !$_POST['d'] || !$_POST['ct'] || !$_POST['rt']){
+            if (!$_POST['id'] || !$_POST['w'] || !$_POST['h'] || !$_POST['d'] || !$_POST['ct'] || !$_POST['rt'] || !$_POST['fn'] || !$_POST['ti']){
                 $conn->close();
-                throw new Exception("Incomplete packet: {$_POST['id']}, {$_POST['w']}, {$_POST['h']}, {$_POST['d']}, {$_POST['ct']}, {$_POST['rt']} ");
+                throw new Exception("Incomplete packet: {$_POST['id']}, {$_POST['w']}, {$_POST['h']}, {$_POST['d']}, {$_POST['ct']}, {$_POST['rt']}, {$_POST['fn']}, {$_POST['ti']} ");
             }
             echo ("this is a php page\n");
             $browserInfo = get_browser($_POST['d'], true);
-            //$insertStatement = "INSERT INTO loadTable VALUES ('{$_POST['id']}', '{$_POST['w']}', '{$_POST['h']}', '{$_POST['ct']}', '{$_POST['rt']}', '{$_POST['d']}');";
-            $insertStatement = "INSERT INTO loadTable VALUES ('{$_POST['id']}', '{$_POST['w']}', '{$_POST['h']}', '{$_POST['ct']}', '{$_POST['rt']}', '{$browserInfo['platform']}', '{$browserInfo['browser']}', '{$browserInfo['version']}');";
-            if ($conn->query($insertStatement)){
+            $stmt = $conn->prepare("INSERT INTO loadTable VALUES (?,?,?,?,?,?,?,?,?,?)");
+            $stmt->bind_param("ssssssssss",$_POST['id'],$_POST['w'],$_POST['h'],$_POST['ct'],$_POST['rt'],$browserInfo['platform'],$browserInfo['browser'],$browserInfo['version'],$_POST['fn'],$_POST['ti']);
+
+            if ($stmt->execute()){
                 echo "inserted!\n";
             } 
             else{
@@ -31,13 +32,16 @@
         //errror log received
         else {
              //check for packet completeness
-            if (!$_POST['id'] || !$_POST['e'] || !$_POST['ti'] || !$_POST['t']){
+            if (!$_POST['id'] || !$_POST['e'] || !$_POST['ti'] || !$_POST['t'] || !$_POST['d'] || !$_POST['el']){
                 $conn->close();
                 throw new Exception("Incomplete packet");
             }
+            $browserInfo = get_browser($_POST['d'], true); 
             // send data to db
-            $insertStatement = "INSERT INTO errorTable VALUES ('{$_POST['id']}', '{$_POST['e'] }', '{$_POST['ti']}')";
-            if ($conn->query($insertStatement)){
+            $stmt = $conn->prepare("INSERT INTO errorTable VALUES (?,?,?,?,?,?,?)");
+            $stmt->bind_param("sssssss",$_POST['id'],$_POST['e'],$_POST['ti'],$browserInfo['platform'],$browserInfo['browser'],$browserInfo['version'],$_POST['el']);
+
+            if ($stmt->execute()){
                 echo "inserted!\n";
             }
             else{
